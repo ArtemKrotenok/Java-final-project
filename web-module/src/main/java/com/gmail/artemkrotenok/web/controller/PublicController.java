@@ -20,5 +20,4 @@ public class PublicController {
     public String getHomePage() {
         return "home";
     }
-
 }

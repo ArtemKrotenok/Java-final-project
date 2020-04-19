@@ -24,6 +24,13 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private UserInformation userInformation;
 
     public Long getId() {
         return id;
@@ -81,6 +88,14 @@ public class User {
         this.role = role;
     }
 
+    public UserInformation getUserInformation() {
+        return userInformation;
+    }
+
+    public void setUserInformation(UserInformation userInformation) {
+        this.userInformation = userInformation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,11 +107,12 @@ public class User {
                 Objects.equals(middleName, user.middleName) &&
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
-                role == user.role;
+                role == user.role &&
+                Objects.equals(userInformation, user.userInformation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, surname, name, middleName, email, password, role);
+        return Objects.hash(id, surname, name, middleName, email, password, role, userInformation);
     }
 }

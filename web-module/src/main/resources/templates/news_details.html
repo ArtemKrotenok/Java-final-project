@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>News details</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container">
+    <h1>NEWS DETAILS</h1>
+    <a href="/news" th:href="@{/news}">Go to news list</a><br>
+    <table class="table">
+        <tr>
+            <th>Date:</th>
+            <th th:text="${news.date}"></th>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <th th:text="${news.title}"></th>
+        </tr>
+        <tr>
+            <th>Text:</th>
+            <th th:text="${news.content}"></th>
+        </tr>
+        <tr>
+            <th>Author:</th>
+            <th th:text="${news.userDTO.name}+' '+${news.userDTO.surname}"></th>
+        </tr>
+    </table>
+    Users comments:
+    <div class="col" th:each="comment : ${news.commentsDTO}">
+        <table class="table table-bordered table-sm">
+            <tr>
+                <th>Author:</th>
+                <th th:text="${comment.userDTO.name}+' '+${comment.userDTO.surname}"></th>
+            </tr>
+            <tr>
+                <th>Date:</th>
+                <th th:text="${comment.date}"></th>
+            </tr>
+            <tr>
+                <th>Text:</th>
+                <th th:text="${comment.content}"></th>
+            </tr>
+        </table>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.min.js}"></script>
+</body>
+</html>

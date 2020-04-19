@@ -20,7 +20,7 @@
         </tr>
         <tr th:each="feedback : ${feedbacks}">
             <td th:text="${feedback.customerName}"></td>
-            <td th:text="${feedback.text}"></td>
+            <td th:text="${feedback.content}"></td>
             <td th:text="${feedback.date}"></td>
             <td>
                 <div style="text-align: center;" th:if="${feedback.visible}">
@@ -34,7 +34,8 @@
             </td>
             <td>
                 <div style="text-align: center;">
-                    <form action="#" method="post" th:action="@{/feedbacks/{id}(id=${feedback.id})}">
+                    <form action="#" method="post" th:action="@{/feedbacks/delete}">
+                        <input type="hidden" name="feedbackId" th:value="${feedback.id}">
                         <button class="btn btn-primary" type="submit">delete</button>
                     </form>
                 </div>

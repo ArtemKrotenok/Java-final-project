@@ -9,7 +9,7 @@
         <relativePath/>
     </parent>
     <groupId>com.gmail.artemkrotenok</groupId>
-    <artifactId>web-shop</artifactId>
+    <artifactId>online_store</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>web-shop</name>

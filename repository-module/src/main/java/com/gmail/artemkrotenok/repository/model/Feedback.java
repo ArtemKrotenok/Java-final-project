@@ -14,8 +14,8 @@ public class Feedback {
     private Long id;
     @Column(name = "customer_name")
     private String customerName;
-    @Column(name = "text")
-    private String text;
+    @Column(name = "content")
+    private String content;
     @Column(name = "date")
     private LocalDateTime date;
     @Column(name = "is_visible")
@@ -37,12 +37,12 @@ public class Feedback {
         this.customerName = customerName;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public LocalDateTime getDate() {
@@ -68,13 +68,13 @@ public class Feedback {
         Feedback feedback = (Feedback) o;
         return Objects.equals(id, feedback.id) &&
                 Objects.equals(customerName, feedback.customerName) &&
-                Objects.equals(text, feedback.text) &&
+                Objects.equals(content, feedback.content) &&
                 Objects.equals(date, feedback.date) &&
                 Objects.equals(isVisible, feedback.isVisible);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerName, text, date, isVisible);
+        return Objects.hash(id, customerName, content, date, isVisible);
     }
 }

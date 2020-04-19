@@ -22,4 +22,6 @@ public interface UserService {
     void deleteUsersByIds(Long[] userIds);
 
     void changeUserPassword(Long id);
+
+    UserDTO update(UserDTO userDTO);
 }
