@@ -21,6 +21,8 @@ public class UserDTO {
     @Size(min = 1, max = 50, message = "'email' size must be between 1 and 50 characters")
     private String email;
     private String password;
+    private String phone;
+    private String address;
     private RoleEnum role;
 
     public Long getId() {
@@ -69,6 +71,22 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public RoleEnum getRole() {

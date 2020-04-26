@@ -18,7 +18,7 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    @GetMapping()
+    @GetMapping
     public String getFeedbackPage(
             @RequestParam(name = "page", required = false) Integer page,
             Model model
@@ -34,9 +34,11 @@ public class FeedbackController {
         return "feedbacks";
     }
 
-    @PostMapping("/{id}")
-    public String deleteFeedback(@PathVariable Long id, Model model) {
-        feedbackService.deleteById(id);
+    @PostMapping("/delete")
+    public String deleteFeedback(
+            @RequestParam(name = "feedbackId") Long feedbackId,
+            Model model) {
+        feedbackService.deleteById(feedbackId);
         model.addAttribute("message", "Selected feedback was deleted successfully");
         model.addAttribute("redirect", "/feedbacks");
         return "message";

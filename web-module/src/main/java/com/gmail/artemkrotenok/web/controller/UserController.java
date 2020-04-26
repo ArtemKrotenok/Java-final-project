@@ -98,6 +98,31 @@ public class UserController {
         return "user_add";
     }
 
+    @GetMapping("/profile")
+    public String getProfileUserPage(
+            @RequestParam(name = "userId") Long userId,
+            Model model) {
+        UserDTO userDTO = userService.getUserById(userId);
+        model.addAttribute("user", userDTO);
+        return "user_profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfileUserPage(
+            Model model,
+            @ModelAttribute(name = "user") UserDTO userDTO,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDTO);
+            return "user_profile";
+        }
+        userService.update(userDTO);
+        model.addAttribute("message", "Profile user " + userDTO.getEmail() + " was update successfully");
+        model.addAttribute("redirect", "/home");
+        return "message";
+    }
+
     @PostMapping
     public String addUser(
             Model model,

@@ -58,7 +58,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         FeedbackDTO feedbackDTO = new FeedbackDTO();
         feedbackDTO.setId(feedback.getId());
         feedbackDTO.setCustomerName(feedback.getCustomerName());
-        feedbackDTO.setText(feedback.getText());
+        feedbackDTO.setContent(feedback.getContent());
         feedbackDTO.setDate(feedback.getDate());
         feedbackDTO.setVisible(feedback.getVisible());
         return feedbackDTO;
@@ -67,7 +67,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private Feedback getObjectFromDTO(FeedbackDTO feedbackDTO) {
         Feedback feedback = new Feedback();
         feedback.setCustomerName(feedbackDTO.getCustomerName());
-        feedback.setText(feedbackDTO.getText());
+        feedback.setContent(feedbackDTO.getContent());
         feedback.setDate(feedbackDTO.getDate());
         feedback.setVisible(feedbackDTO.getVisible());
         return feedback;

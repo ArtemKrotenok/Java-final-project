@@ -8,8 +8,8 @@ public class FeedbackDTO {
     private Long id;
     @NotNull(message = "The field 'castomer name' must be filled")
     private String customerName;
-    @NotNull(message = "The field 'text' must be filled")
-    private String text;
+    @NotNull(message = "The field 'content' must be filled")
+    private String content;
     @NotNull(message = "The field 'date' must be filled")
     private LocalDateTime date;
     private Boolean isVisible;
@@ -30,12 +30,12 @@ public class FeedbackDTO {
         this.customerName = customerName;
     }
 
-    public String getText() {
-        return text;
+    public String getContent() {
+        return content;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public LocalDateTime getDate() {

@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.gmail.artemkrotenok.repository.model.RoleEnum.ADMINISTRATOR;
+import static com.gmail.artemkrotenok.repository.model.RoleEnum.*;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -32,9 +32,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/webjars/**").permitAll()
-                .antMatchers("/home").hasAnyRole(ADMINISTRATOR.name())
+                .antMatchers("/home").hasAnyRole(ADMINISTRATOR.name(), CUSTOMER_USER.name())
                 .antMatchers("/users**").hasAnyRole(ADMINISTRATOR.name())
                 .antMatchers("/feedback**").hasAnyRole(ADMINISTRATOR.name())
+                .antMatchers("/news**").hasAnyRole(CUSTOMER_USER.name())
+                .antMatchers("/users/profile**").hasAnyRole(CUSTOMER_USER.name())
+                .antMatchers("/api**").hasAnyRole(SECURE_API_USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

@@ -7,6 +7,7 @@ import com.gmail.artemkrotenok.service.UserService;
 import com.gmail.artemkrotenok.service.constants.PageConstants;
 import com.gmail.artemkrotenok.service.model.UpdateUserDTO;
 import com.gmail.artemkrotenok.service.model.UserDTO;
+import com.gmail.artemkrotenok.service.util.UserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,11 +27,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordService passwordService;
+    private final UserUtil userUtil;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PasswordService passwordService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PasswordService passwordService, UserUtil userUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.passwordService = passwordService;
+        this.userUtil = userUtil;
     }
 
     @Override
@@ -117,6 +120,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    @Transactional
+    public UserDTO update(UserDTO userDTO) {
+        User user = getObjectFromDTO(userDTO);
+        userRepository.merge(user);
+        return getDTOFromObject(user);
+    }
+
     private List<UserDTO> convertItemsToItemsDTO(List<User> items) {
         return items.stream()
                 .map(this::getDTOFromObject)
@@ -124,24 +135,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDTO getDTOFromObject(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setSurname(user.getSurname());
-        userDTO.setName(user.getName());
-        userDTO.setMiddleName(user.getMiddleName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPassword(user.getPassword());
-        userDTO.setRole(user.getRole());
-        return userDTO;
+        return userUtil.getDTOFromObject(user);
     }
 
     private User getObjectFromDTO(UserDTO userDTO) {
-        User user = new User();
-        user.setSurname(userDTO.getSurname());
-        user.setName(userDTO.getName());
-        user.setMiddleName(userDTO.getMiddleName());
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
-        return user;
+        return userUtil.getObjectFromDTO(userDTO);
     }
 }

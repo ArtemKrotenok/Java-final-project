@@ -1,6 +1,5 @@
 package com.gmail.artemkrotenok.service.model;
 
-import com.gmail.artemkrotenok.repository.model.RoleEnum;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
