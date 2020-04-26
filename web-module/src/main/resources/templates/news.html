@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.springframework.org/security/tags" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>News</title>
+    <title>Page news</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
@@ -17,6 +18,8 @@
             <th>Name Surname</th>
             <th>Description</th>
             <th>full text</th>
+            <th sec:authorize="hasRole('SALE_USER')">delete</th>
+
         </tr>
         <tr th:each="news : ${newsList}">
             <td th:text="${news.date}"></td>
@@ -27,6 +30,12 @@
                 <div style="text-align: center;">
                     <a th:href="@{/news/{id}(id=${news.id})}">more details</a>
                 </div>
+            </td>
+            <td sec:authorize="hasRole('SALE_USER')">
+                <form action="#" method="post" th:action="@{/news/delete}">
+                    <input type="hidden" name="newsId" th:value="${news.id}">
+                    <button class="btn btn-primary" type="submit">delete</button>
+                </form>
             </td>
         </tr>
     </table>

@@ -16,7 +16,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
+    public FeedbackServiceImpl(
+            FeedbackRepository feedbackRepository) {
         this.feedbackRepository = feedbackRepository;
     }
 
@@ -72,4 +73,5 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setVisible(feedbackDTO.getVisible());
         return feedback;
     }
+
 }

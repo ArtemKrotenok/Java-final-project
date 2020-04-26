@@ -1,5 +1,12 @@
 package com.gmail.artemkrotenok.service.impl;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import com.gmail.artemkrotenok.repository.NewsRepository;
 import com.gmail.artemkrotenok.repository.UserRepository;
 import com.gmail.artemkrotenok.repository.model.Comment;
@@ -15,19 +22,21 @@ import com.gmail.artemkrotenok.service.util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 @Service
 public class NewsServiceImpl implements NewsService {
 
+    public static final int MAX_LENGTH_DESCRIPTION_NEWS = 200;
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd";
     private final NewsRepository newsRepository;
     private final UserRepository userRepository;
     private final UserUtil userUtil;
     private final CommentUtil commentUtil;
 
-    public NewsServiceImpl(NewsRepository newsRepository, UserRepository userRepository, UserUtil userUtil, CommentUtil commentUtil) {
+    public NewsServiceImpl(
+            NewsRepository newsRepository,
+            UserRepository userRepository,
+            UserUtil userUtil,
+            CommentUtil commentUtil) {
         this.newsRepository = newsRepository;
         this.userRepository = userRepository;
         this.userUtil = userUtil;
@@ -67,6 +76,9 @@ public class NewsServiceImpl implements NewsService {
     @Transactional
     public NewsDTO findById(Long id) {
         News news = newsRepository.findById(id);
+        if (news == null) {
+            return null;
+        }
         List<Comment> comments = news.getComments();
         comments.sort(new Comparator<Comment>() {
             public int compare(Comment o1, Comment o2) {
@@ -85,6 +97,16 @@ public class NewsServiceImpl implements NewsService {
         return true;
     }
 
+    @Override
+    @Transactional
+    public NewsDTO update(NewsDTO newsDTO) {
+        News news = newsRepository.findById(newsDTO.getId());
+        news.setDate(LocalDate.now());
+        news.setTitle(newsDTO.getTitle());
+        news.setContent(newsDTO.getContent());
+        newsRepository.merge(news);
+        return getDTOFromObject(news);
+    }
 
     private List<NewsDTO> getNewsDTOFromObject(List<News> newsList) {
         List<NewsDTO> newsDTOList = new ArrayList<>();
@@ -97,15 +119,27 @@ public class NewsServiceImpl implements NewsService {
     private NewsDTO getDTOFromObject(News news) {
         NewsDTO newsDTO = new NewsDTO();
         newsDTO.setId(news.getId());
-        newsDTO.setDate(news.getDate());
+        newsDTO.setDate(news.getDate().toString());
         newsDTO.setTitle(news.getTitle());
-        newsDTO.setDescription(news.getDescription());
+        newsDTO.setDescription(getDescription(news));
         newsDTO.setContent(news.getContent());
         List<CommentDTO> commentsDTO = getCommentsDTOFromObject(news.getComments());
         newsDTO.setCommentsDTO(commentsDTO);
         UserDTO userDTO = userUtil.getDTOFromObject(news.getUser());
         newsDTO.setUserDTO(userDTO);
         return newsDTO;
+    }
+
+    private String getDescription(News news) {
+        String content = news.getContent();
+        String descriptionContent;
+        if (content.length() <= MAX_LENGTH_DESCRIPTION_NEWS) {
+            return content;
+        }
+        descriptionContent = content.substring(0, MAX_LENGTH_DESCRIPTION_NEWS - 1);
+        int lengthDescription = descriptionContent.lastIndexOf(' ');
+        descriptionContent = descriptionContent.substring(0, lengthDescription);
+        return descriptionContent;
     }
 
     private List<CommentDTO> getCommentsDTOFromObject(List<Comment> comments) {
@@ -118,12 +152,15 @@ public class NewsServiceImpl implements NewsService {
 
     private News getObjectFromDTO(NewsDTO newsDTO) {
         News news = new News();
-        news.setDate(newsDTO.getDate());
+        String stringDate = newsDTO.getDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
+        LocalDate date = LocalDate.parse(stringDate, formatter);
+        news.setDate(date);
         news.setTitle(newsDTO.getTitle());
-        news.setDescription(newsDTO.getDescription());
         news.setContent(newsDTO.getContent());
         User user = userRepository.findById(newsDTO.getUserDTO().getId());
         news.setUser(user);
         return news;
     }
+
 }

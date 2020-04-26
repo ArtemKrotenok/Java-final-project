@@ -10,10 +10,21 @@
 <div class="container">
     <h1>HOME PAGE</h1>
     <br>
-    <a href="/users" th:href="@{/users}">Show users list</a><br>
-    <a href="/users/add" th:href="@{/users/add}">Add new user</a><br>
-    <a href="/feedbacks" th:href="@{/feedbacks}">Show customer feedback list</a><br>
-    <a href="/news" th:href="@{/news}">Show news list</a><br>
+    You have access to these resources:<br>
+    <div sec:authorize="hasRole('SALE_USER')">
+        <a href="#" th:href="@{/news}">Show news list</a><br>
+        <a href="#" th:href="@{/news/add}">Add news</a><br>
+        <a href="#" th:href="@{/items}">Show items list</a><br>
+    </div>
+    <div sec:authorize="hasRole('CUSTOMER_USER')">
+        <a href="#" th:href="@{/news}">Show news list</a><br>
+        <a href="#" th:href="@{/users/profile}">Edit my profile</a><br>
+    </div>
+    <div sec:authorize="hasRole('ADMINISTRATOR')">
+        <a href="#" th:href="@{/users}">Show users list</a><br>
+        <a href="#" th:href="@{/users/add}">Add new user</a><br>
+        <a href="#" th:href="@{/feedbacks}">Show customer feedback list</a><br>
+    </div>
     <br><br>
     <span sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></span>
 </div>

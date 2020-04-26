@@ -1,10 +1,20 @@
 package com.gmail.artemkrotenok.repository.model;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "news")
@@ -15,11 +25,9 @@ public class News {
     @Column(name = "id")
     private Long id;
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
     @Column(name = "title")
     private String title;
-    @Column(name = "description")
-    private String description;
     @Column(name = "content")
     private String content;
     @ManyToOne
@@ -29,7 +37,6 @@ public class News {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-
     @JoinColumn(name = "news_id")
     private List<Comment> comments = new ArrayList<>();
 
@@ -41,11 +48,11 @@ public class News {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -55,14 +62,6 @@ public class News {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getContent() {
@@ -91,18 +90,24 @@ public class News {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         News news = (News) o;
         return Objects.equals(id, news.id) &&
                 Objects.equals(date, news.date) &&
                 Objects.equals(title, news.title) &&
-                Objects.equals(description, news.description) &&
-                Objects.equals(content, news.content);
+                Objects.equals(content, news.content) &&
+                Objects.equals(user, news.user) &&
+                Objects.equals(comments, news.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, title, description, content);
+        return Objects.hash(id, date, title, content, user, comments);
     }
+
 }

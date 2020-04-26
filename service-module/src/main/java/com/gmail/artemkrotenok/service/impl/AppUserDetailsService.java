@@ -20,7 +20,8 @@ public class AppUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
 
-    public AppUserDetailsService(UserService userService) {
+    public AppUserDetailsService(
+            UserService userService) {
         this.userService = userService;
     }
 
@@ -34,4 +35,5 @@ public class AppUserDetailsService implements UserDetailsService {
         logger.info("User for '" + email + "' was found");
         return new AppUserPrincipal(user);
     }
+
 }

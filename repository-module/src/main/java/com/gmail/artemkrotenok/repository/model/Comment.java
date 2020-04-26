@@ -1,8 +1,15 @@
 package com.gmail.artemkrotenok.repository.model;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "comment")
@@ -13,7 +20,7 @@ public class Comment {
     @Column(name = "id")
     private Long id;
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
     @Column(name = "content")
     private String content;
     @Column(name = "news_id")
@@ -30,11 +37,11 @@ public class Comment {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -64,17 +71,23 @@ public class Comment {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Comment comment = (Comment) o;
         return Objects.equals(id, comment.id) &&
                 Objects.equals(date, comment.date) &&
                 Objects.equals(content, comment.content) &&
-                Objects.equals(newsId, comment.newsId);
+                Objects.equals(newsId, comment.newsId) &&
+                Objects.equals(user, comment.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, content, newsId);
+        return Objects.hash(id, date, content, newsId, user);
     }
+
 }

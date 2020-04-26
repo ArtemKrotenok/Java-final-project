@@ -4,6 +4,8 @@ import com.gmail.artemkrotenok.repository.model.RoleEnum;
 import com.gmail.artemkrotenok.service.UserService;
 import com.gmail.artemkrotenok.service.model.UpdateUserDTO;
 import com.gmail.artemkrotenok.service.model.UserDTO;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +21,8 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(
+            UserService userService) {
         this.userService = userService;
     }
 
@@ -100,9 +103,9 @@ public class UserController {
 
     @GetMapping("/profile")
     public String getProfileUserPage(
-            @RequestParam(name = "userId") Long userId,
             Model model) {
-        UserDTO userDTO = userService.getUserById(userId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDTO userDTO = userService.getUserByEmail(authentication.getName());
         model.addAttribute("user", userDTO);
         return "user_profile";
     }
@@ -118,7 +121,7 @@ public class UserController {
             return "user_profile";
         }
         userService.update(userDTO);
-        model.addAttribute("message", "Profile user " + userDTO.getEmail() + " was update successfully");
+        model.addAttribute("message", "User profile was update successfully");
         model.addAttribute("redirect", "/home");
         return "message";
     }
@@ -139,4 +142,5 @@ public class UserController {
         model.addAttribute("redirect", "/users");
         return "message";
     }
+
 }

@@ -123,7 +123,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDTO update(UserDTO userDTO) {
-        User user = getObjectFromDTO(userDTO);
+        User user = userRepository.findById(userDTO.getId());
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setMiddleName(userDTO.getMiddleName());
+        user.getUserInformation().setAddress(userDTO.getAddress());
+        user.getUserInformation().setPhone(userDTO.getPhone());
         userRepository.merge(user);
         return getDTOFromObject(user);
     }
@@ -141,4 +146,5 @@ public class UserServiceImpl implements UserService {
     private User getObjectFromDTO(UserDTO userDTO) {
         return userUtil.getObjectFromDTO(userDTO);
     }
+
 }

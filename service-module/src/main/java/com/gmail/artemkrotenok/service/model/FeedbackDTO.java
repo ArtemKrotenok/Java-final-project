@@ -1,7 +1,7 @@
 package com.gmail.artemkrotenok.service.model;
 
+import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 public class FeedbackDTO {
 
@@ -11,7 +11,7 @@ public class FeedbackDTO {
     @NotNull(message = "The field 'content' must be filled")
     private String content;
     @NotNull(message = "The field 'date' must be filled")
-    private LocalDateTime date;
+    private LocalDate date;
     private Boolean isVisible;
 
     public Long getId() {
@@ -38,11 +38,11 @@ public class FeedbackDTO {
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -53,4 +53,5 @@ public class FeedbackDTO {
     public void setVisible(Boolean visible) {
         isVisible = visible;
     }
+
 }
