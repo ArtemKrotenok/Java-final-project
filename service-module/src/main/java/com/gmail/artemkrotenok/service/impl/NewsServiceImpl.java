@@ -1,7 +1,6 @@
 package com.gmail.artemkrotenok.service.impl;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,11 +12,11 @@ import com.gmail.artemkrotenok.repository.model.Comment;
 import com.gmail.artemkrotenok.repository.model.News;
 import com.gmail.artemkrotenok.repository.model.User;
 import com.gmail.artemkrotenok.service.NewsService;
-import com.gmail.artemkrotenok.service.constants.PageConstants;
 import com.gmail.artemkrotenok.service.model.CommentDTO;
 import com.gmail.artemkrotenok.service.model.NewsDTO;
 import com.gmail.artemkrotenok.service.model.UserDTO;
 import com.gmail.artemkrotenok.service.util.CommentUtil;
+import com.gmail.artemkrotenok.service.util.PaginationUtil;
 import com.gmail.artemkrotenok.service.util.UserUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,8 +66,8 @@ public class NewsServiceImpl implements NewsService {
     @Override
     @Transactional
     public List<NewsDTO> getItemsByPageSorted(Integer page) {
-        int startPosition = ((page - 1) * PageConstants.ITEMS_BY_PAGE + 1) - 1;
-        List<News> news = newsRepository.getItemsByPageSorted(startPosition, PageConstants.ITEMS_BY_PAGE);
+        int startPosition = PaginationUtil.getPositionByPage(page);
+        List<News> news = newsRepository.getItemsByPageSorted(startPosition, PaginationUtil.ITEMS_BY_PAGE);
         return getNewsDTOFromObject(news);
     }
 

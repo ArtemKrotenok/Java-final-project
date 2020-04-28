@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import com.gmail.artemkrotenok.repository.ItemRepository;
 import com.gmail.artemkrotenok.repository.model.Item;
 import com.gmail.artemkrotenok.service.ItemService;
-import com.gmail.artemkrotenok.service.constants.PageConstants;
 import com.gmail.artemkrotenok.service.model.ItemDTO;
+import com.gmail.artemkrotenok.service.util.PaginationUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +42,8 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public List<ItemDTO> getItemsByPageSorted(Integer page) {
-        int startPosition = ((page - 1) * PageConstants.ITEMS_BY_PAGE + 1) - 1;
-        List<Item> items = itemRepository.getItemsByPageSorted(startPosition, PageConstants.ITEMS_BY_PAGE);
+        int startPosition = PaginationUtil.getPositionByPage(page);
+        List<Item> items = itemRepository.getItemsByPageSorted(startPosition, PaginationUtil.ITEMS_BY_PAGE);
         return convertItemsToItemsDTO(items);
     }
 

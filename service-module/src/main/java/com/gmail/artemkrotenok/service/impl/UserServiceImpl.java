@@ -4,9 +4,9 @@ import com.gmail.artemkrotenok.repository.UserRepository;
 import com.gmail.artemkrotenok.repository.model.User;
 import com.gmail.artemkrotenok.service.PasswordService;
 import com.gmail.artemkrotenok.service.UserService;
-import com.gmail.artemkrotenok.service.constants.PageConstants;
 import com.gmail.artemkrotenok.service.model.UpdateUserDTO;
 import com.gmail.artemkrotenok.service.model.UserDTO;
+import com.gmail.artemkrotenok.service.util.PaginationUtil;
 import com.gmail.artemkrotenok.service.util.UserUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,13 +23,18 @@ public class UserServiceImpl implements UserService {
 
     public static final long ID_SUPER_ADMINISTRATOR = 1;
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    public static final int SUPER_ADMINISTRATOR_ID = 1;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordService passwordService;
     private final UserUtil userUtil;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, PasswordService passwordService, UserUtil userUtil) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            PasswordService passwordService,
+            UserUtil userUtil) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.passwordService = passwordService;
@@ -90,8 +95,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserDTO> getItemsByPageSorted(int page) {
-        int startPosition = ((page - 1) * PageConstants.ITEMS_BY_PAGE + 1) - 1;
-        List<User> items = userRepository.getItemsByPageSorted(startPosition, PageConstants.ITEMS_BY_PAGE);
+        int startPosition = PaginationUtil.getPositionByPage(page);
+        List<User> items = userRepository.getItemsByPageSorted(startPosition, PaginationUtil.ITEMS_BY_PAGE);
         return convertItemsToItemsDTO(items);
     }
 
@@ -99,8 +104,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUsersByIds(Long[] userIds) {
         for (Long id : userIds) {
-            if ((id != 0) && (id != 1)) //Ban on removing super administrator
-            {
+            if (id != SUPER_ADMINISTRATOR_ID) {
                 User user = userRepository.findById(id);
                 userRepository.remove(user);
             }
