@@ -4,7 +4,7 @@ import com.gmail.artemkrotenok.repository.FeedbackRepository;
 import com.gmail.artemkrotenok.repository.model.Feedback;
 import com.gmail.artemkrotenok.service.FeedbackService;
 import com.gmail.artemkrotenok.service.model.FeedbackDTO;
-import com.gmail.artemkrotenok.service.constants.PageConstants;
+import com.gmail.artemkrotenok.service.util.PaginationUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +16,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
 
-    public FeedbackServiceImpl(FeedbackRepository feedbackRepository) {
+    public FeedbackServiceImpl(
+            FeedbackRepository feedbackRepository) {
         this.feedbackRepository = feedbackRepository;
     }
 
@@ -36,8 +37,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public List<FeedbackDTO> getItemsByPage(int page) {
-        int startPosition = ((page - 1) * PageConstants.ITEMS_BY_PAGE + 1) - 1;
-        List<Feedback> feedbacks = feedbackRepository.getItemsByPage(startPosition, PageConstants.ITEMS_BY_PAGE);
+        int startPosition = PaginationUtil.getPositionByPage(page);
+        List<Feedback> feedbacks = feedbackRepository.getItemsByPage(startPosition, PaginationUtil.ITEMS_BY_PAGE);
         return convertItemsToItemsDTO(feedbacks);
     }
 
@@ -72,4 +73,5 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setVisible(feedbackDTO.getVisible());
         return feedback;
     }
+
 }

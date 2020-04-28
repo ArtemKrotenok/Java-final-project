@@ -14,7 +14,9 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentUtil commentUtil;
 
-    public CommentServiceImpl(CommentRepository commentRepository, CommentUtil commentUtil) {
+    public CommentServiceImpl(
+            CommentRepository commentRepository,
+            CommentUtil commentUtil) {
         this.commentRepository = commentRepository;
         this.commentUtil = commentUtil;
     }
@@ -27,6 +29,14 @@ public class CommentServiceImpl implements CommentService {
         return getDTOFromObject(comment);
     }
 
+    @Override
+    @Transactional
+    public boolean deleteById(Long id) {
+        Comment comment = commentRepository.findById(id);
+        commentRepository.remove(comment);
+        return true;
+    }
+
     private CommentDTO getDTOFromObject(Comment comment) {
         return commentUtil.getDTOFromObject(comment);
     }
@@ -34,4 +44,5 @@ public class CommentServiceImpl implements CommentService {
     private Comment getObjectFromDTO(CommentDTO commentDTO) {
         return commentUtil.getObjectFromDTO(commentDTO);
     }
+
 }

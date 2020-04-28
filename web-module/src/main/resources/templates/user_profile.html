@@ -28,17 +28,17 @@
                     <input class="form-control" th:field="*{middleName}" name="middleName" id="middleName" type="text"
                            th:value="*{middleName}"
                            pattern="^[a-zA-Z0-9]+$" maxlength="40" required>
-
                     <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span><br>
                     <label for="phone">Phone:</label>
                     <input class="form-control" th:field="*{phone}" name="phone" id="phone" type="text"
                            th:value="*{phone}"
-                           maxlength="20">
+                           pattern="^[0-9\+\-\(\)]+$" maxlength="20">
                     <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span><br>
                     <label for="address">Address:</label>
                     <input class="form-control" th:field="*{address}" name="address" id="address" type="text"
                            th:value="*{address}"
-                           maxlength="100">
+                           pattern="^[a-zA-Z0-9\,\.\-\/]+$" maxlength="100">
+                    <input name="id" id="id" type="text" th:value="*{id}" hidden>
                     <br>
                 </div>
                 <button class="btn btn-primary" type="submit">save changes</button>

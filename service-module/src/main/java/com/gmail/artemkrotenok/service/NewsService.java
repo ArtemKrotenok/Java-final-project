@@ -17,4 +17,7 @@ public interface NewsService {
     NewsDTO findById(Long id);
 
     boolean deleteById(Long id);
+
+    NewsDTO update(NewsDTO newsDTO);
+
 }

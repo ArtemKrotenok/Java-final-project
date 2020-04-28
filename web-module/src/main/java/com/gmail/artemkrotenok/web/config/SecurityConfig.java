@@ -16,7 +16,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AppUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    public SecurityConfig(AppUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(
+            AppUserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -32,11 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/webjars/**").permitAll()
-                .antMatchers("/home").hasAnyRole(ADMINISTRATOR.name(), CUSTOMER_USER.name())
+                .antMatchers("/home").hasAnyRole(ADMINISTRATOR.name(), SALE_USER.name(), CUSTOMER_USER.name(), SECURE_API_USER.name())
                 .antMatchers("/users**").hasAnyRole(ADMINISTRATOR.name())
                 .antMatchers("/feedback**").hasAnyRole(ADMINISTRATOR.name())
-                .antMatchers("/news**").hasAnyRole(CUSTOMER_USER.name())
-                .antMatchers("/users/profile**").hasAnyRole(CUSTOMER_USER.name())
+                .antMatchers("/news").hasAnyRole(CUSTOMER_USER.name(), SALE_USER.name())
+                .antMatchers("/news/add").hasAnyRole(SALE_USER.name())
+                .antMatchers("/items").hasAnyRole(SALE_USER.name())
+                .antMatchers("/users/profile").hasAnyRole(CUSTOMER_USER.name())
                 .antMatchers("/api**").hasAnyRole(SECURE_API_USER.name())
                 .anyRequest().authenticated()
                 .and()
@@ -48,4 +52,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
+
 }

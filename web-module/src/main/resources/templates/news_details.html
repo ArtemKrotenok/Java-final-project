@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.springframework.org/security/tags" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>News details</title>
+    <title>Article details</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}"/>
 </head>
 <body>
 <div class="container">
-    <h1>NEWS DETAILS</h1>
+    <h1>ARTICLE DETAILS</h1>
     <a href="/news" th:href="@{/news}">Go to news list</a><br>
     <table class="table">
         <tr>
@@ -26,6 +27,15 @@
             <th>Author:</th>
             <th th:text="${news.userDTO.name}+' '+${news.userDTO.surname}"></th>
         </tr>
+        <tr sec:authorize="hasRole('SALE_USER')">
+            <th></th>
+            <th>
+                <form action="#" method="get" th:action="@{/news/update}">
+                    <input type="hidden" name="newsId" th:value="${news.id}">
+                    <button class="btn btn-primary" type="submit">edit this article</button>
+                </form>
+            </th>
+        </tr>
     </table>
     Users comments:
     <div class="col" th:each="comment : ${news.commentsDTO}">
@@ -41,6 +51,14 @@
             <tr>
                 <th>Text:</th>
                 <th th:text="${comment.content}"></th>
+            </tr>
+            <tr sec:authorize="hasRole('SALE_USER')">
+                <th>
+                    <form action="#" method="post" th:action="@{/comments/delete}">
+                        <input type="hidden" name="commentId" th:value="${comment.id}">
+                        <button class="btn btn-primary" type="submit">delete</button>
+                    </form>
+                </th>
             </tr>
         </table>
     </div>

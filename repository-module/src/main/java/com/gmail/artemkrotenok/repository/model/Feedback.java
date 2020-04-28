@@ -1,8 +1,13 @@
 package com.gmail.artemkrotenok.repository.model;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "feedback")
@@ -17,7 +22,7 @@ public class Feedback {
     @Column(name = "content")
     private String content;
     @Column(name = "date")
-    private LocalDateTime date;
+    private LocalDate date;
     @Column(name = "is_visible")
     private Boolean isVisible;
 
@@ -45,11 +50,11 @@ public class Feedback {
         this.content = content;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -63,8 +68,12 @@ public class Feedback {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Feedback feedback = (Feedback) o;
         return Objects.equals(id, feedback.id) &&
                 Objects.equals(customerName, feedback.customerName) &&
@@ -77,4 +86,5 @@ public class Feedback {
     public int hashCode() {
         return Objects.hash(id, customerName, content, date, isVisible);
     }
+
 }

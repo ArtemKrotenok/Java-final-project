@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan(basePackages = {
-        "com.gmail.artemkrotenok.repository",
+        "com.gmail.artemkrotenok.web",
         "com.gmail.artemkrotenok.service",
-        "com.gmail.artemkrotenok.web"})
+        "com.gmail.artemkrotenok.repository"})
 public class AppConfig {
 }

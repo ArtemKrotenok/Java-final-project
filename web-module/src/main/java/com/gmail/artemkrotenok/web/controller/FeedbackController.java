@@ -14,7 +14,8 @@ public class FeedbackController {
 
     private final FeedbackService feedbackService;
 
-    public FeedbackController(FeedbackService feedbackService) {
+    public FeedbackController(
+            FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
     }
 
@@ -43,4 +44,5 @@ public class FeedbackController {
         model.addAttribute("redirect", "/feedbacks");
         return "message";
     }
+
 }

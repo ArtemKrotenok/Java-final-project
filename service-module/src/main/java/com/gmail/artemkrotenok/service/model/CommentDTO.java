@@ -1,13 +1,13 @@
 package com.gmail.artemkrotenok.service.model;
 
+import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 public class CommentDTO {
 
     private Long id;
-    private LocalDateTime date;
+    private LocalDate date;
     @NotNull(message = "The field 'content' must be filled")
     @Size(min = 1, max = 200, message = "'content' size must be between 1 and 200 characters")
     private String content;
@@ -22,11 +22,11 @@ public class CommentDTO {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -53,4 +53,5 @@ public class CommentDTO {
     public void setNewsId(Long newsId) {
         this.newsId = newsId;
     }
+
 }
