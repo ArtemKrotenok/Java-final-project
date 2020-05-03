@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.springframework.org/security/tags" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Page items</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
@@ -16,6 +17,9 @@
             <th>Unique number</th>
             <th>Price</th>
             <th>Show details</th>
+            <th sec:authorize="hasRole('CUSTOMER_USER')">To order</th>
+            <th sec:authorize="hasRole('SALE_USER')">copy</th>
+            <th sec:authorize="hasRole('SALE_USER')">delete</th>
         </tr>
         <tr th:each="item : ${items}">
             <td th:text="${item.name}"></td>
@@ -25,6 +29,34 @@
                 <div style="text-align: center;">
                     <a th:href="@{/items/{id}(id=${item.id})}">more details</a>
                 </div>
+            </td>
+            <td sec:authorize="hasRole('CUSTOMER_USER')">
+                <form action="#" method="post" th:action="@{/orders}">
+                    <div class="input-group mb-3">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <input name="quantity" type="number" class="form-control" placeholder="1" value="1"
+                               min="0" max="100000" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">create order</button>
+                        </div>
+                    </div>
+                </form>
+            </td>
+            <td sec:authorize="hasRole('SALE_USER')">
+                <form action="#" method="post" th:action="@{/items/copy}">
+                    <div class="input-group mb-3">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <button class="btn btn-outline-secondary" type="submit">copy</button>
+                    </div>
+                </form>
+            </td>
+            <td sec:authorize="hasRole('SALE_USER')">
+                <form action="#" method="post" th:action="@{/items/delete}">
+                    <div class="input-group mb-3">
+                        <input type="hidden" name="itemId" th:value="${item.id}">
+                        <button class="btn btn-outline-secondary" type="submit">delete</button>
+                    </div>
+                </form>
             </td>
         </tr>
     </table>

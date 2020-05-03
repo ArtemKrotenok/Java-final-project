@@ -1,6 +1,6 @@
 package com.gmail.artemkrotenok.repository.model;
 
-public enum RoleEnum {
+public enum UserRoleEnum {
     ADMINISTRATOR,
     SALE_USER,
     CUSTOMER_USER,

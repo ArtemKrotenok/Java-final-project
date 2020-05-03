@@ -7,7 +7,7 @@ import com.gmail.artemkrotenok.service.UserService;
 import com.gmail.artemkrotenok.service.model.UpdateUserDTO;
 import com.gmail.artemkrotenok.service.model.UserDTO;
 import com.gmail.artemkrotenok.service.util.PaginationUtil;
-import com.gmail.artemkrotenok.service.util.UserUtil;
+import com.gmail.artemkrotenok.service.util.UserConverterUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,24 +21,21 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    public static final long ID_SUPER_ADMINISTRATOR = 1;
-    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
     public static final int SUPER_ADMINISTRATOR_ID = 1;
+    private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordService passwordService;
-    private final UserUtil userUtil;
 
     public UserServiceImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
-            PasswordService passwordService,
-            UserUtil userUtil) {
+            PasswordService passwordService
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.passwordService = passwordService;
-        this.userUtil = userUtil;
     }
 
     @Override
@@ -48,11 +45,9 @@ public class UserServiceImpl implements UserService {
         String newUserPassword = passwordService.getNewPassword();
         String encodedPassword = passwordEncoder.encode(newUserPassword);
         user.setPassword(encodedPassword);
+        user.setDeleted(false);
         userRepository.persist(user);
-        Boolean passwordSend = passwordService.sendPasswordToEmail(newUserPassword, user.getEmail());
-        if (!passwordSend) {
-            logger.error("Failed to send password to e-mail: '" + user.getEmail() + "'");
-        }
+        passwordService.sendPasswordToEmail(newUserPassword, user.getEmail());
         return getDTOFromObject(user);
     }
 
@@ -77,6 +72,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id);
+        if (user == null) {
+            return null;
+        }
         return getDTOFromObject(user);
     }
 
@@ -85,8 +83,10 @@ public class UserServiceImpl implements UserService {
     public UserDTO changeUserRole(UpdateUserDTO updateUserDTO) {
         Long id = updateUserDTO.getId();
         User user = userRepository.findById(id);
-        if (id != ID_SUPER_ADMINISTRATOR) //Ban on removing super administrator
-        {
+        if (user == null) {
+            return null;
+        }
+        if (id != SUPER_ADMINISTRATOR_ID) {
             user.setRole(updateUserDTO.getRole());
         }
         return getDTOFromObject(user);
@@ -96,8 +96,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDTO> getItemsByPageSorted(int page) {
         int startPosition = PaginationUtil.getPositionByPage(page);
-        List<User> items = userRepository.getItemsByPageSorted(startPosition, PaginationUtil.ITEMS_BY_PAGE);
-        return convertItemsToItemsDTO(items);
+        List<User> users = userRepository.getItemsByPageSorted(startPosition, PaginationUtil.ITEMS_BY_PAGE);
+        return convertItemsToItemsDTO(users);
     }
 
     @Override
@@ -118,10 +118,7 @@ public class UserServiceImpl implements UserService {
         String newUserPassword = passwordService.getNewPassword();
         String encodedPassword = passwordEncoder.encode(newUserPassword);
         user.setPassword(encodedPassword);
-        Boolean passwordSend = passwordService.sendPasswordToEmail(newUserPassword, user.getEmail());
-        if (!passwordSend) {
-            logger.error("Failed to send password to e-mail: '" + user.getEmail() + "'");
-        }
+        passwordService.sendPasswordToEmail(newUserPassword, user.getEmail());
     }
 
     @Override
@@ -144,11 +141,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserDTO getDTOFromObject(User user) {
-        return userUtil.getDTOFromObject(user);
+        return UserConverterUtil.getDTOFromObject(user);
     }
 
     private User getObjectFromDTO(UserDTO userDTO) {
-        return userUtil.getObjectFromDTO(userDTO);
+        return UserConverterUtil.getObjectFromDTO(userDTO);
     }
 
 }

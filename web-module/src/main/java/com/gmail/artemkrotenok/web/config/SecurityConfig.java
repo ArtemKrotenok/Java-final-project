@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.gmail.artemkrotenok.repository.model.RoleEnum.*;
+import static com.gmail.artemkrotenok.repository.model.UserRoleEnum.*;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,17 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.httpBasic().and()
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/webjars/**").permitAll()
                 .antMatchers("/home").hasAnyRole(ADMINISTRATOR.name(), SALE_USER.name(), CUSTOMER_USER.name(), SECURE_API_USER.name())
                 .antMatchers("/users**").hasAnyRole(ADMINISTRATOR.name())
                 .antMatchers("/feedback**").hasAnyRole(ADMINISTRATOR.name())
-                .antMatchers("/news").hasAnyRole(CUSTOMER_USER.name(), SALE_USER.name())
+                .antMatchers("/news").hasAnyRole(SALE_USER.name(), CUSTOMER_USER.name())
                 .antMatchers("/news/add").hasAnyRole(SALE_USER.name())
-                .antMatchers("/items").hasAnyRole(SALE_USER.name())
+                .antMatchers("/orders").hasAnyRole(SALE_USER.name(),CUSTOMER_USER.name())
+                .antMatchers("/items").hasAnyRole(SALE_USER.name(), CUSTOMER_USER.name())
+                .antMatchers("/items/upload").hasAnyRole(SALE_USER.name())
                 .antMatchers("/users/profile").hasAnyRole(CUSTOMER_USER.name())
-                .antMatchers("/api**").hasAnyRole(SECURE_API_USER.name())
+                .antMatchers("/api/*").hasAnyRole(SECURE_API_USER.name())
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -50,7 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
+
                 .permitAll();
+
     }
 
 }

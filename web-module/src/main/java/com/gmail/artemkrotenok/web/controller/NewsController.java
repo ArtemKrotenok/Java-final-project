@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.gmail.artemkrotenok.web.constant.ControllerConstant.FIRST_PAGE_FOR_PAGINATION;
+
 @Controller
 @RequestMapping("/news")
 public class NewsController {
@@ -39,7 +41,7 @@ public class NewsController {
             Model model
     ) {
         if (page == null) {
-            page = 1;
+            page = FIRST_PAGE_FOR_PAGINATION;
         }
         Long countNews = newsService.getCountNews();
         model.addAttribute("countNews", countNews);

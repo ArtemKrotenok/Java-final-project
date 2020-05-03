@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.gmail.artemkrotenok.web.constant.ControllerConstant.FIRST_PAGE_FOR_PAGINATION;
+
 @RestController
 @RequestMapping("/api/articles")
 
@@ -30,7 +32,11 @@ public class APINewsController {
     }
 
     @GetMapping
-    public List<NewsDTO> getNewsByPage(@RequestParam(name = "page") Integer page) {
+    public List<NewsDTO> getNewsByPage(
+            @RequestParam(name = "page", required = false) Integer page) {
+        if (page == null) {
+            page = FIRST_PAGE_FOR_PAGINATION;
+        }
         return newsService.getItemsByPageSorted(page);
     }
 

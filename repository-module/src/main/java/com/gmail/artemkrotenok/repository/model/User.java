@@ -3,8 +3,15 @@ package com.gmail.artemkrotenok.repository.model;
 import javax.persistence.*;
 import java.util.Objects;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "user")
+@SQLDelete(sql = "UPDATE user " +
+        "SET is_deleted = true " +
+        "WHERE id = ?")
+@Where(clause = "is_deleted = false")
 public class User {
 
     @Id
@@ -23,7 +30,9 @@ public class User {
     private String password;
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private RoleEnum role;
+    private UserRoleEnum role;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
     @OneToOne(
             fetch = FetchType.LAZY,
             mappedBy = "user",
@@ -80,12 +89,20 @@ public class User {
         this.password = password;
     }
 
-    public RoleEnum getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public UserInformation getUserInformation() {
@@ -98,8 +115,12 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         User user = (User) o;
         return Objects.equals(id, user.id) &&
                 Objects.equals(surname, user.surname) &&
@@ -108,11 +129,13 @@ public class User {
                 Objects.equals(email, user.email) &&
                 Objects.equals(password, user.password) &&
                 role == user.role &&
+                Objects.equals(isDeleted, user.isDeleted) &&
                 Objects.equals(userInformation, user.userInformation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, surname, name, middleName, email, password, role, userInformation);
+        return Objects.hash(id, surname, name, middleName, email, password, role, isDeleted, userInformation);
     }
+
 }

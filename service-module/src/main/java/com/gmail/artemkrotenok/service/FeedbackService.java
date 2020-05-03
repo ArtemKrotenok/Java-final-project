@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface FeedbackService {
 
-    void add(FeedbackDTO feedbackDTO);
+    FeedbackDTO add(FeedbackDTO feedbackDTO);
 
     Long getCountFeedback();
 

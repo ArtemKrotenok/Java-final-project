@@ -18,6 +18,7 @@ public class ItemDTO {
     @NotNull(message = "The field 'description' must be filled")
     @Size(min = 1, max = 200, message = "'description' size must be between 1 and 200 characters")
     private String description;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -57,6 +58,14 @@ public class ItemDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
 }

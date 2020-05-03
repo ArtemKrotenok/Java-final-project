@@ -6,11 +6,9 @@ import javax.validation.constraints.NotNull;
 public class FeedbackDTO {
 
     private Long id;
-    @NotNull(message = "The field 'castomer name' must be filled")
-    private String customerName;
+    private UserDTO userDTO;
     @NotNull(message = "The field 'content' must be filled")
     private String content;
-    @NotNull(message = "The field 'date' must be filled")
     private LocalDate date;
     private Boolean isVisible;
 
@@ -22,12 +20,12 @@ public class FeedbackDTO {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public UserDTO getUserDTO() {
+        return userDTO;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setUserDTO(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
 
     public String getContent() {

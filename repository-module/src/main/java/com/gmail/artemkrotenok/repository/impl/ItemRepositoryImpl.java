@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public class ItemRepositoryImpl extends GenericRepositoryImpl<Long, Item> implements ItemRepository {
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Item> getItemsByPageSorted(int startPosition, int itemsByPage) {
         String hql = "FROM " + entityClass.getName() + " u ORDER BY u.name ASC";
         Query query = entityManager.createQuery(hql);

@@ -1,6 +1,6 @@
 package com.gmail.artemkrotenok.service.model;
 
-import com.gmail.artemkrotenok.repository.model.RoleEnum;
+import com.gmail.artemkrotenok.repository.model.UserRoleEnum;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,7 +23,8 @@ public class UserDTO {
     private String password;
     private String phone;
     private String address;
-    private RoleEnum role;
+    private UserRoleEnum role;
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -89,11 +90,20 @@ public class UserDTO {
         this.address = address;
     }
 
-    public RoleEnum getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
 }

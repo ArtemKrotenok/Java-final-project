@@ -4,5 +4,6 @@ public interface PasswordService {
 
     String getNewPassword();
 
-    Boolean sendPasswordToEmail(String password, String email);
+    void sendPasswordToEmail(String password, String email);
+
 }

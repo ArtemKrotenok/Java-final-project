@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.gmail.artemkrotenok.web.constant.ControllerConstant.FIRST_PAGE_FOR_PAGINATION;
+
 @RestController
 @RequestMapping("/api/items")
 
@@ -32,7 +34,10 @@ public class APIItemController {
 
     @GetMapping
     public List<ItemDTO> getItemsByPage(
-            @RequestParam(name = "page") Integer page) {
+            @RequestParam(name = "page", required = false) Integer page) {
+        if (page == null) {
+            page = FIRST_PAGE_FOR_PAGINATION;
+        }
         return itemService.getItemsByPageSorted(page);
     }
 
@@ -42,7 +47,7 @@ public class APIItemController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addNewNews(@RequestBody @Valid ItemDTO itemDTO,
+    public ResponseEntity<Object> addItem(@RequestBody @Valid ItemDTO itemDTO,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(FormattedTextErrorsUtil.getTextErrors(bindingResult), HttpStatus.BAD_REQUEST);

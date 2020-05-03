@@ -16,8 +16,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "news")
+@SQLDelete(sql = "UPDATE news " +
+        "SET is_deleted = true " +
+        "WHERE id = ?")
+@Where(clause = "is_deleted = false")
 public class News {
 
     @Id
@@ -33,6 +40,8 @@ public class News {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
     @OneToMany(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
@@ -80,6 +89,14 @@ public class News {
         this.user = user;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
@@ -102,12 +119,13 @@ public class News {
                 Objects.equals(title, news.title) &&
                 Objects.equals(content, news.content) &&
                 Objects.equals(user, news.user) &&
+                Objects.equals(isDeleted, news.isDeleted) &&
                 Objects.equals(comments, news.comments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date, title, content, user, comments);
+        return Objects.hash(id, date, title, content, user, isDeleted, comments);
     }
 
 }

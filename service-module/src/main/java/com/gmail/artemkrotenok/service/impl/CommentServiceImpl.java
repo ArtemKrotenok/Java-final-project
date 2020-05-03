@@ -4,7 +4,7 @@ import com.gmail.artemkrotenok.repository.CommentRepository;
 import com.gmail.artemkrotenok.repository.model.Comment;
 import com.gmail.artemkrotenok.service.CommentService;
 import com.gmail.artemkrotenok.service.model.CommentDTO;
-import com.gmail.artemkrotenok.service.util.CommentUtil;
+import com.gmail.artemkrotenok.service.util.CommentConverterUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,13 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final CommentUtil commentUtil;
 
-    public CommentServiceImpl(
-            CommentRepository commentRepository,
-            CommentUtil commentUtil) {
+    public CommentServiceImpl(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.commentUtil = commentUtil;
     }
 
     @Override
@@ -38,11 +34,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDTO getDTOFromObject(Comment comment) {
-        return commentUtil.getDTOFromObject(comment);
+
+        return CommentConverterUtil.getDTOFromObject(comment);
     }
 
     private Comment getObjectFromDTO(CommentDTO commentDTO) {
-        return commentUtil.getObjectFromDTO(commentDTO);
+
+        return CommentConverterUtil.getObjectFromDTO(commentDTO);
     }
 
 }

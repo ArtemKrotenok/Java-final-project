@@ -1,6 +1,6 @@
 package com.gmail.artemkrotenok.service.model;
 
-import com.gmail.artemkrotenok.repository.model.RoleEnum;
+import com.gmail.artemkrotenok.repository.model.UserRoleEnum;
 
 public class UpdateUserDTO {
 
@@ -10,7 +10,7 @@ public class UpdateUserDTO {
     private String middleName;
     private String email;
     private Boolean changePassword;
-    private RoleEnum role;
+    private UserRoleEnum role;
 
     public Long getId() {
         return id;
@@ -60,11 +60,11 @@ public class UpdateUserDTO {
         this.changePassword = changePassword;
     }
 
-    public RoleEnum getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(UserRoleEnum role) {
         this.role = role;
     }
 }

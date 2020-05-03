@@ -3,11 +3,9 @@ package com.gmail.artemkrotenok.service.util;
 import com.gmail.artemkrotenok.repository.model.User;
 import com.gmail.artemkrotenok.repository.model.UserInformation;
 import com.gmail.artemkrotenok.service.model.UserDTO;
-import org.springframework.stereotype.Component;
 
-@Component
-public class UserUtil {
-    public UserDTO getDTOFromObject(User user) {
+public class UserConverterUtil {
+    public static UserDTO getDTOFromObject(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
         userDTO.setSurname(user.getSurname());
@@ -21,8 +19,9 @@ public class UserUtil {
         return userDTO;
     }
 
-    public User getObjectFromDTO(UserDTO userDTO) {
+    public static User getObjectFromDTO(UserDTO userDTO) {
         User user = new User();
+        user.setId(userDTO.getId());
         user.setSurname(userDTO.getSurname());
         user.setName(userDTO.getName());
         user.setMiddleName(userDTO.getMiddleName());
