@@ -50,7 +50,6 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
         return query.getResultList();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Long getCount() {
         String hql = "SELECT COUNT(*) FROM " + entityClass.getSimpleName();
@@ -67,4 +66,5 @@ public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
         query.setMaxResults(itemsByPage);
         return query.getResultList();
     }
+
 }

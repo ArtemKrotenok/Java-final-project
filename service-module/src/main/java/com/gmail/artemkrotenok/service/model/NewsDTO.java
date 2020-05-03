@@ -18,6 +18,7 @@ public class NewsDTO {
     @Size(min = 1, max = 1000, message = "'content' size must be between 1 and 1000 characters")
     private String content;
     private UserDTO userDTO;
+    private Boolean isDeleted;
     private List<CommentDTO> commentsDTO = new ArrayList<>();
 
     public Long getId() {
@@ -66,6 +67,14 @@ public class NewsDTO {
 
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public List<CommentDTO> getCommentsDTO() {

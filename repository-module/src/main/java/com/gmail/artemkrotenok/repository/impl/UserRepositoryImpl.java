@@ -19,6 +19,7 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> getItemsByPageSorted(int startPosition, int itemsByPage) {
         String hql = "FROM " + entityClass.getName() + " u ORDER BY u.email ASC";
         Query query = entityManager.createQuery(hql);
@@ -26,4 +27,5 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         query.setMaxResults(itemsByPage);
         return query.getResultList();
     }
+
 }

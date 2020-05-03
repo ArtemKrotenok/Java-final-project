@@ -4,28 +4,35 @@ import com.gmail.artemkrotenok.repository.FeedbackRepository;
 import com.gmail.artemkrotenok.repository.model.Feedback;
 import com.gmail.artemkrotenok.service.FeedbackService;
 import com.gmail.artemkrotenok.service.model.FeedbackDTO;
+import com.gmail.artemkrotenok.service.util.FeedbackConverterUtil;
 import com.gmail.artemkrotenok.service.util.PaginationUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
 
+    public static final boolean DEFUEL_VISIBLE_VALUE = true;
     private final FeedbackRepository feedbackRepository;
 
     public FeedbackServiceImpl(
-            FeedbackRepository feedbackRepository) {
+            FeedbackRepository feedbackRepository
+    ) {
         this.feedbackRepository = feedbackRepository;
     }
 
     @Override
     @Transactional
-    public void add(FeedbackDTO feedbackDTO) {
+    public FeedbackDTO add(FeedbackDTO feedbackDTO) {
         Feedback feedback = getObjectFromDTO(feedbackDTO);
+        feedback.setDate(LocalDate.now());
+        feedback.setVisible(DEFUEL_VISIBLE_VALUE);
         feedbackRepository.persist(feedback);
+        return getDTOFromObject(feedback);
     }
 
     @Override
@@ -56,22 +63,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     private FeedbackDTO getDTOFromObject(Feedback feedback) {
-        FeedbackDTO feedbackDTO = new FeedbackDTO();
-        feedbackDTO.setId(feedback.getId());
-        feedbackDTO.setCustomerName(feedback.getCustomerName());
-        feedbackDTO.setContent(feedback.getContent());
-        feedbackDTO.setDate(feedback.getDate());
-        feedbackDTO.setVisible(feedback.getVisible());
-        return feedbackDTO;
+        return FeedbackConverterUtil.getDTOFromObject(feedback);
     }
 
     private Feedback getObjectFromDTO(FeedbackDTO feedbackDTO) {
-        Feedback feedback = new Feedback();
-        feedback.setCustomerName(feedbackDTO.getCustomerName());
-        feedback.setContent(feedbackDTO.getContent());
-        feedback.setDate(feedbackDTO.getDate());
-        feedback.setVisible(feedbackDTO.getVisible());
-        return feedback;
+        return FeedbackConverterUtil.getObjectFromDTO(feedbackDTO);
     }
 
 }

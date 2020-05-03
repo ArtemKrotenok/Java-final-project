@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,8 +19,9 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "customer_name")
-    private String customerName;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     @Column(name = "content")
     private String content;
     @Column(name = "date")
@@ -34,12 +37,12 @@ public class Feedback {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public User getUser() {
+        return user;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getContent() {
@@ -76,7 +79,7 @@ public class Feedback {
         }
         Feedback feedback = (Feedback) o;
         return Objects.equals(id, feedback.id) &&
-                Objects.equals(customerName, feedback.customerName) &&
+                Objects.equals(user, feedback.user) &&
                 Objects.equals(content, feedback.content) &&
                 Objects.equals(date, feedback.date) &&
                 Objects.equals(isVisible, feedback.isVisible);
@@ -84,7 +87,7 @@ public class Feedback {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customerName, content, date, isVisible);
+        return Objects.hash(id, user, content, date, isVisible);
     }
 
 }

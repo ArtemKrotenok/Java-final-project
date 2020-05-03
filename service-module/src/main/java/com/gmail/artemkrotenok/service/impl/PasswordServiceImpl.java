@@ -1,9 +1,11 @@
 package com.gmail.artemkrotenok.service.impl;
 
-import com.gmail.artemkrotenok.service.PasswordService;
-import org.springframework.stereotype.Service;
-
 import java.security.SecureRandom;
+
+import com.gmail.artemkrotenok.service.PasswordService;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
@@ -17,6 +19,12 @@ public class PasswordServiceImpl implements PasswordService {
 
     private static final SecureRandom secureRandom = new SecureRandom();
 
+    private final JavaMailSender javaMailSender;
+
+    public PasswordServiceImpl(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
     @Override
     public String getNewPassword() {
         StringBuilder result = new StringBuilder(LENGTH_PASSWORD);
@@ -29,10 +37,12 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    public Boolean sendPasswordToEmail(String password, String email) {
-        //***************************************************************************
-        //TODO here it is necessary to implement sending a password to the user email
-        //***************************************************************************
-        return true;
+    public void sendPasswordToEmail(String password, String email) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+        msg.setSubject("New password for account online store");
+        msg.setText("You new password:" + password);
+        javaMailSender.send(msg);
     }
+
 }

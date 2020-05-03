@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DatabaseConfig {
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
@@ -26,4 +27,5 @@ public class DatabaseConfig {
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
+
 }

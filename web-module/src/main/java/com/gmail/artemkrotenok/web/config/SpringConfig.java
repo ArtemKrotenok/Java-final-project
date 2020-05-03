@@ -8,5 +8,5 @@ import org.springframework.context.annotation.Configuration;
         "com.gmail.artemkrotenok.web",
         "com.gmail.artemkrotenok.service",
         "com.gmail.artemkrotenok.repository"})
-public class AppConfig {
+public class SpringConfig {
 }

@@ -1,6 +1,6 @@
 package com.gmail.artemkrotenok.web.controller;
 
-import com.gmail.artemkrotenok.repository.model.RoleEnum;
+import com.gmail.artemkrotenok.repository.model.UserRoleEnum;
 import com.gmail.artemkrotenok.service.UserService;
 import com.gmail.artemkrotenok.service.model.UpdateUserDTO;
 import com.gmail.artemkrotenok.service.model.UserDTO;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.gmail.artemkrotenok.web.constant.ControllerConstant.FIRST_PAGE_FOR_PAGINATION;
 
 @Controller
 @RequestMapping("/users")
@@ -32,7 +34,7 @@ public class UserController {
             Model model
     ) {
         if (page == null) {
-            page = 1;
+            page = FIRST_PAGE_FOR_PAGINATION;
         }
         Long countUsers = userService.getCountUsers();
         model.addAttribute("countUsers", countUsers);
@@ -43,16 +45,33 @@ public class UserController {
         return "users";
     }
 
+    @PostMapping
+    public String addUser(
+            Model model,
+            @Valid @ModelAttribute(name = "user") UserDTO userDTO,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDTO);
+            model.addAttribute("roles", Arrays.asList(UserRoleEnum.values()));
+            return "user_add";
+        }
+        userService.add(userDTO);
+        model.addAttribute("message", "User " + userDTO.getEmail() + " was added successfully");
+        model.addAttribute("redirect", "/users");
+        return "message";
+    }
+
     @PostMapping("/update")
     public String updateUser(
             @ModelAttribute(name = "userUpdate") UpdateUserDTO updateUserDTO,
             Model model
     ) {
-        UserDTO UserDTO = userService.getUserById(updateUserDTO.getId());
+        UserDTO userDTO = userService.getUserById(updateUserDTO.getId());
         model.addAttribute("redirect", "/users");
-        if (UserDTO != null) {
+        if (userDTO != null) {
             StringBuilder resultMessage = new StringBuilder();
-            resultMessage.append("For user '").append(UserDTO.getEmail()).append("': ");
+            resultMessage.append("For user '").append(userDTO.getEmail()).append("': ");
             if (updateUserDTO.getRole() != null) {
                 userService.changeUserRole(updateUserDTO);
                 resultMessage.append("role change saved");
@@ -74,7 +93,7 @@ public class UserController {
             Model model) {
         UserDTO userDTO = userService.getUserById(updateUserDTO.getId());
         model.addAttribute("user", userDTO);
-        model.addAttribute("roles", Arrays.asList(RoleEnum.values()));
+        model.addAttribute("roles", Arrays.asList(UserRoleEnum.values()));
         model.addAttribute("userUpdate", new UpdateUserDTO());
         return "user_role_change";
     }
@@ -97,7 +116,7 @@ public class UserController {
     @GetMapping("/add")
     public String getAddUserPage(Model model) {
         model.addAttribute("user", new UserDTO());
-        model.addAttribute("roles", Arrays.asList(RoleEnum.values()));
+        model.addAttribute("roles", Arrays.asList(UserRoleEnum.values()));
         return "user_add";
     }
 
@@ -123,23 +142,6 @@ public class UserController {
         userService.update(userDTO);
         model.addAttribute("message", "User profile was update successfully");
         model.addAttribute("redirect", "/home");
-        return "message";
-    }
-
-    @PostMapping
-    public String addUser(
-            Model model,
-            @Valid @ModelAttribute(name = "user") UserDTO userDTO,
-            BindingResult bindingResult
-    ) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userDTO);
-            model.addAttribute("roles", Arrays.asList(RoleEnum.values()));
-            return "user_add";
-        }
-        userService.add(userDTO);
-        model.addAttribute("message", "User " + userDTO.getEmail() + " was added successfully");
-        model.addAttribute("redirect", "/users");
         return "message";
     }
 

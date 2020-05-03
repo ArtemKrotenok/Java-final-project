@@ -17,4 +17,5 @@ public interface GenericRepository<I, T> {
     Long getCount();
 
     List<T> getItemsByPage(int startPosition, int itemsByPage);
+
 }

@@ -15,4 +15,9 @@ public interface ItemService {
     boolean deleteById(Long id);
 
     ItemDTO findById(Long id);
+
+    ItemDTO copyById(Long itemId);
+
+    int addItemsAsJSON(String pathFile);
+
 }

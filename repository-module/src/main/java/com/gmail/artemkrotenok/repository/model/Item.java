@@ -9,8 +9,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "item")
+@SQLDelete(sql = "UPDATE item " +
+        "SET is_deleted = true " +
+        "WHERE id = ?")
+@Where(clause = "is_deleted = false")
 public class Item {
 
     @Id
@@ -25,6 +32,8 @@ public class Item {
     private BigDecimal price;
     @Column(name = "description")
     private String description;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     public Long getId() {
         return id;
@@ -66,6 +75,14 @@ public class Item {
         this.description = description;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -79,12 +96,13 @@ public class Item {
                 Objects.equals(name, item.name) &&
                 Objects.equals(uniqueNumber, item.uniqueNumber) &&
                 Objects.equals(price, item.price) &&
-                Objects.equals(description, item.description);
+                Objects.equals(description, item.description) &&
+                Objects.equals(isDeleted, item.isDeleted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, uniqueNumber, price, description);
+        return Objects.hash(id, name, uniqueNumber, price, description, isDeleted);
     }
 
 }

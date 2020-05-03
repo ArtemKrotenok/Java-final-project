@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:sec="http://www.springframework.org/security/tags" xmlns:th="http://www.thymeleaf.org">
 <html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:sec="http://www.springframework.org/security/tags" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Home page</title>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
@@ -15,10 +15,15 @@
         <a href="#" th:href="@{/news}">Show news list</a><br>
         <a href="#" th:href="@{/news/add}">Add news</a><br>
         <a href="#" th:href="@{/items}">Show items list</a><br>
+        <a href="#" th:href="@{/orders}">Show orders list</a><br>
+        <a href="#" th:href="@{/items/upload}">Upload list items</a><br>
     </div>
     <div sec:authorize="hasRole('CUSTOMER_USER')">
-        <a href="#" th:href="@{/news}">Show news list</a><br>
         <a href="#" th:href="@{/users/profile}">Edit my profile</a><br>
+        <a href="#" th:href="@{/news}">Show news list</a><br>
+        <a href="#" th:href="@{/items}">Show items list</a><br>
+        <a href="#" th:href="@{/orders}">Show my orders list</a><br>
+        <a href="#" th:href="@{/feedbacks/add}">Add feedback</a><br>
     </div>
     <div sec:authorize="hasRole('ADMINISTRATOR')">
         <a href="#" th:href="@{/users}">Show users list</a><br>
