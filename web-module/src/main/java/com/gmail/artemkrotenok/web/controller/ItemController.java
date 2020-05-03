@@ -104,7 +104,7 @@ public class ItemController {
             model.addAttribute("redirect", "/items/upload");
         } catch (IOException e) {
             model.addAttribute("message", "Error upload file");
-            model.addAttribute("redirect", "/items/upload");
+            model.addAttribute("redirect", "/items");
         }
         return "message";
     }

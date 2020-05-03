@@ -67,4 +67,5 @@ public class UpdateUserDTO {
     public void setRole(UserRoleEnum role) {
         this.role = role;
     }
+
 }

@@ -19,4 +19,5 @@ public class NewsRepositoryImpl extends GenericRepositoryImpl<Long, News> implem
         query.setMaxResults(itemsByPage);
         return query.getResultList();
     }
+
 }

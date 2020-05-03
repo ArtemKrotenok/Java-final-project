@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 class OrderServiceTest {
 
     public static final long TEST_ORDER_ID = 2L;
-    private static final Integer TEST_ITEM_QUANTITY = 5 ;
+    private static final Integer TEST_ITEM_QUANTITY = 5;
     private static final BigDecimal TEST_ORDER_AMOUNT = BigDecimal.valueOf(615);
     private static final BigDecimal TEST_ITEM_PRICE = BigDecimal.valueOf(123);
     private static final long TEST_ITEM_ID = 3L;
@@ -103,11 +103,11 @@ class OrderServiceTest {
     }
 
     private OrderNewDTO getValidOrderNewDTO() {
-    OrderNewDTO orderNewDTO = new OrderNewDTO();
+        OrderNewDTO orderNewDTO = new OrderNewDTO();
         orderNewDTO.setUserEmail(TEST_USER_EMAIL);
         orderNewDTO.setItemId(TEST_ITEM_ID);
         orderNewDTO.setQuantity(TEST_ITEM_QUANTITY);
-    return orderNewDTO;
+        return orderNewDTO;
     }
 
 }

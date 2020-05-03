@@ -49,4 +49,5 @@ class APIUserControllerTest {
                         .content(content)
         ).andExpect(status().isCreated());
     }
+
 }

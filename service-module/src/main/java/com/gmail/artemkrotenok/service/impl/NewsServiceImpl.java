@@ -35,13 +35,6 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     @Transactional
-    public List<NewsDTO> findAll() {
-        List<News> newsList = newsRepository.findAll();
-        return getNewsDTOFromObject(newsList);
-    }
-
-    @Override
-    @Transactional
     public Long getCountNews() {
         return newsRepository.getCount();
     }

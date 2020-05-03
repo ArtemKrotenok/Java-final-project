@@ -8,8 +8,6 @@ public interface NewsService {
 
     NewsDTO add(NewsDTO newsDTO);
 
-    List<NewsDTO> findAll();
-
     Long getCountNews();
 
     List<NewsDTO> getItemsByPageSorted(Integer page);

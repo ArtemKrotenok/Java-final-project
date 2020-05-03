@@ -61,8 +61,12 @@ public class UserInformation {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UserInformation that = (UserInformation) o;
         return Objects.equals(userId, that.userId) &&
                 Objects.equals(phone, that.phone) &&
@@ -73,4 +77,5 @@ public class UserInformation {
     public int hashCode() {
         return Objects.hash(userId, phone, address);
     }
+
 }

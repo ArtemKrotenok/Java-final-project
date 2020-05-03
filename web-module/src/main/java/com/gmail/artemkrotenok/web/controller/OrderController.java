@@ -54,8 +54,7 @@ public class OrderController {
             model.addAttribute("countOrders", countOrders);
             model.addAttribute("page", page);
             ordersDTO = orderService.getOrdersByPageSortedByUser(page, userEmail);
-        }
-        else {
+        } else {
             Long countOrders = orderService.getCountOrder();
             model.addAttribute("countOrders", countOrders);
             model.addAttribute("page", page);

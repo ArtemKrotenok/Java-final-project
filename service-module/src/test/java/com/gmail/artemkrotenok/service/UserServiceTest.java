@@ -35,8 +35,8 @@ class UserServiceTest {
     public static final UserRoleEnum TEST_USER_ROLE = ADMINISTRATOR;
     public static final UserRoleEnum TEST_USER_ROLE_ANY = SALE_USER;
     public static final String TEST_PASSWORD = "testPassword";
-    private static final String TEST_USER_ADDRESS ="Belarus, Minsk, Administratorov str., 123-1/3" ;
-    private static final String TEST_USER_PHONE ="+375291111111" ;
+    private static final String TEST_USER_ADDRESS = "Belarus, Minsk, Administratorov str., 123-1/3";
+    private static final String TEST_USER_PHONE = "+375291111111";
     @Mock
     private UserRepository userRepository;
     @Mock

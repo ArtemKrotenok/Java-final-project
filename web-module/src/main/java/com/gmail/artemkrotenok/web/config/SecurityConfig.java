@@ -37,13 +37,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/webjars/**").permitAll()
                 .antMatchers("/home").hasAnyRole(ADMINISTRATOR.name(), SALE_USER.name(), CUSTOMER_USER.name(), SECURE_API_USER.name())
                 .antMatchers("/users**").hasAnyRole(ADMINISTRATOR.name())
+                .antMatchers("/users/profile").hasAnyRole(CUSTOMER_USER.name())
                 .antMatchers("/feedback**").hasAnyRole(ADMINISTRATOR.name())
                 .antMatchers("/news").hasAnyRole(SALE_USER.name(), CUSTOMER_USER.name())
                 .antMatchers("/news/add").hasAnyRole(SALE_USER.name())
-                .antMatchers("/orders").hasAnyRole(SALE_USER.name(),CUSTOMER_USER.name())
+                .antMatchers("/orders").hasAnyRole(SALE_USER.name(), CUSTOMER_USER.name())
                 .antMatchers("/items").hasAnyRole(SALE_USER.name(), CUSTOMER_USER.name())
                 .antMatchers("/items/upload").hasAnyRole(SALE_USER.name())
-                .antMatchers("/users/profile").hasAnyRole(CUSTOMER_USER.name())
                 .antMatchers("/api/*").hasAnyRole(SECURE_API_USER.name())
                 .anyRequest().authenticated()
                 .and()
@@ -53,9 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-
                 .permitAll();
-
     }
 
 }

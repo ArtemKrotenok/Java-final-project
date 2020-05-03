@@ -13,4 +13,5 @@ public interface FeedbackService {
     List<FeedbackDTO> getItemsByPage(int page);
 
     void deleteById(Long id);
+
 }

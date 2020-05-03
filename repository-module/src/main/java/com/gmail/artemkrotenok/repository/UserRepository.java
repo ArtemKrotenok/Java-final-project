@@ -9,4 +9,5 @@ public interface UserRepository extends GenericRepository<Long, User> {
     User getUserByEmail(String email);
 
     List<User> getItemsByPageSorted(int startPosition, int itemsByPage);
+
 }

@@ -24,4 +24,5 @@ public interface UserService {
     void changeUserPassword(Long id);
 
     UserDTO update(UserDTO userDTO);
+
 }

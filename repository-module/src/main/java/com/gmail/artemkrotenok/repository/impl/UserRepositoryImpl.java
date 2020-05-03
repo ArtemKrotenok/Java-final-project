@@ -27,4 +27,5 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
         query.setMaxResults(itemsByPage);
         return query.getResultList();
     }
+
 }

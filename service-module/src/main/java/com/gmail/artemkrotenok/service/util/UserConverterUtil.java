@@ -5,6 +5,7 @@ import com.gmail.artemkrotenok.repository.model.UserInformation;
 import com.gmail.artemkrotenok.service.model.UserDTO;
 
 public class UserConverterUtil {
+
     public static UserDTO getDTOFromObject(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(user.getId());
@@ -34,4 +35,5 @@ public class UserConverterUtil {
         user.setUserInformation(userInformation);
         return user;
     }
+
 }

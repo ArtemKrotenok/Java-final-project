@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemServiceImpl implements ItemService {
 
     private static final Logger logger = LogManager.getLogger(MethodHandles.lookup().lookupClass());
+    public static final String COPY_NAME_POSTFIX = " COPY";
 
     private final ItemRepository itemRepository;
 
@@ -110,7 +111,7 @@ public class ItemServiceImpl implements ItemService {
 
     private Item getCopy(Item item) {
         Item copyItem = new Item();
-        copyItem.setName(item.getName() + " COPY");
+        copyItem.setName(item.getName() + COPY_NAME_POSTFIX);
         copyItem.setDescription(item.getDescription());
         copyItem.setPrice(item.getPrice());
         copyItem.setUniqueNumber(UUID.randomUUID().toString());
